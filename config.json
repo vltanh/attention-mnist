@@ -1,0 +1,54 @@
+{
+    "gpus": null,
+
+    "model": {
+        "name":                         "Unet",
+        "num_class":                    13,
+        "method":                       "interpolate",
+        "args":{
+            "learning_rate":            1e-4,
+            "momentum":                 0.9,
+            "weight_decay":             5e-4
+        }
+        
+    },
+
+    "train": {
+        "type":                         "SUNRGBD",                          
+        "path": {
+            "root":                     "data/SUN-RGBD",
+            "img_folder":               "SUNRGBD-train_images",
+            "depth_folder":             "sunrgbd_train_depth",
+            "label_folder":             "train13labels",
+            "save_path":                "model/"
+        },
+        "args": {
+            "batch_size":               8,
+            "epochs":                   10,
+            "num_workers":              8,
+            "num_iters":                10,
+            "save_period":              10,
+            "early_stop":               10
+        }
+    },
+
+    "log":{
+        "path":                         "weights/",
+        "log_per_iter":                 20
+    },
+
+    "validation": {
+        "type":                         "SUNRGBD",
+        "path": {
+            "root":                     "data/SUN-RGBD",
+            "img_folder":               "SUNRGBD-test_images"        
+        },
+        "args": {
+            "trained_model":            "model/trained_model.pt",
+            "num_workers":              4
+        }
+    }
+
+
+    
+}

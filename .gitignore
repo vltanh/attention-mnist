@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+
+# VSCode
+.vscode/
+
+# Data
+data/
+vis/
+weights/
+*.pth
