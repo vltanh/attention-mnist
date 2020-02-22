@@ -1,2 +1,3 @@
-# attention-mnist
-Applying attention mechanism on MNIST (Handwritten Digits) Dataset.
+# Examples
+
+!(https://github.com/vltanh/attention-mnist/blob/master/examples/ezgif-6-5d4bf7a77ead.gif?raw=true)
