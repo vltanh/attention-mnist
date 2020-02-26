@@ -1,5 +1,5 @@
 import argparse 
-import json 
+import yaml
 import torch 
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -69,12 +69,13 @@ def train(config):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument('--config')
     parser.add_argument('--gpus', default=None)
-    parser.add_argument('--cfg', default='config.json')
 
     args = parser.parse_args()
-    config_path = args.cfg
-    config = json.load(open(config_path, 'r'))
+
+    config_path = args.config
+    config = yaml.load(open(config_path, 'r'), Loader=yaml.Loader)
     config['gpus'] = args.gpus
 
     train(config)
