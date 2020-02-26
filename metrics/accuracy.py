@@ -23,4 +23,4 @@ class Accuracy(Metrics):
         return np.mean(self.scores)
         
     def summary(self):
-        return self.scores
+        return np.mean(self.scores)

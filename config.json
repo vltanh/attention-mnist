@@ -24,7 +24,7 @@
         },
         "args": {
             "batch_size":               8,
-            "epochs":                   10,
+            "epochs":                   50,
             "num_workers":              8,
             "num_iters":                10,
             "save_period":              10,

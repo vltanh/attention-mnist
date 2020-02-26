@@ -19,6 +19,7 @@ class MNISTDataset(data.Dataset):
     def __getitem__(self, i):
         img = self.imgs[i].float().reshape(1, 28, 28) / 255.0
         lbl = self.lbls[i].long()
+        print(lbl)
         return img, lbl
 
     def __len__(self):

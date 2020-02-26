@@ -3,20 +3,21 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from models.modules.MultiHeadedAttention import MultiHeadedAttention
-from models.modules.Encoder import EncoderLayer
+from models.modules.Encoder import Encoder, EncoderLayer
 from models.modules.PositionwiseFeedForward import PositionwiseFeedForward
 
 class ClAtNet(nn.Module):
-    def __init__(self, nfeatures, nclasses, nheads, dropout):
+    def __init__(self, in_channels, size,
+                 nfeatures, nclasses, nheads, dropout):
         super().__init__()
         self.conv = nn.Sequential(
-            nn.Conv2d(1, nfeatures, kernel_size=3, padding=1),
+            nn.Conv2d(in_channels, nfeatures, kernel_size=3, padding=1),
             nn.ReLU()
         )
         attn = MultiHeadedAttention(h=nheads, d_model=nfeatures, dropout=dropout)
         ff = PositionwiseFeedForward(nfeatures, d_ff=2*nfeatures, dropout=dropout)
-        self.attn = EncoderLayer(nfeatures, attn, ff, dropout)
-        self.cls = nn.Linear(nfeatures * 28 * 28, nclasses)
+        self.attn = Encoder(EncoderLayer(nfeatures, attn, ff, dropout), 1)
+        self.cls = nn.Linear(size[0] * size[1], nclasses)
         self.nfeatures = nfeatures
 
         # self.init_(self.conv)
@@ -30,9 +31,10 @@ class ClAtNet(nn.Module):
 
     def forward(self, x):
         x = self.conv(x)
-        x = x.reshape(-1, self.nfeatures, 28 * 28).permute(0, 2, 1)
+        x = x.reshape(x.size(0), self.nfeatures, -1).permute(0, 2, 1)
         x = self.attn(x, None)
-        x = x.reshape(-1, self.nfeatures * 28 * 28)
+        x = torch.mean(x, dim=-1)
+        # x = x.reshape(-1, 28 * 28)
         x = self.cls(x)
         return x
 

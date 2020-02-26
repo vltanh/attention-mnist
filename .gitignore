@@ -7,5 +7,5 @@ __pycache__/
 # Data
 data/
 vis/
-weights/
 *.pth
+runs/
