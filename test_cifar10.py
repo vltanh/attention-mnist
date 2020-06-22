@@ -8,23 +8,23 @@ from datasets.cifar10 import CIFAR10Dataset
 
 import os
 
-SUBMISSION = False
+SUBMISSION = True
 
 nbatches = 32
 
-test_dataset = CIFAR10Dataset('data/CIFAR10/test') #, 
+test_dataset = CIFAR10Dataset('data/CIFAR10/test')#, 
                             #   'data/CIFAR10/trainLabels.csv')
 test_dataloader = torch.utils.data.DataLoader(test_dataset, 
                                               batch_size=nbatches)
 
 nimgs = len(test_dataset)
 nsteps = 32 * 32
-nheads = 1
+nheads = 2
 
 dev = torch.device('cuda:0')
 net = ClAtNet(in_channels=3, size=(32, 32),
-              nfeatures=64, nclasses=10, nheads=2, dropout=0.0).to(dev)
-net.load_state_dict(torch.load('runs/2020-02-26_00:50:48/best_loss.pth')['model_state_dict'])
+              nfeatures=64, nclasses=10, nheads=nheads, dropout=0.0).to(dev)
+net.load_state_dict(torch.load('runs/2020-02-26_07:43:34/best_loss.pth')['model_state_dict'])
 net.eval()
 
 def print_attn(m, i, o):
@@ -61,7 +61,7 @@ if not SUBMISSION:
 if SUBMISSION:
     f = open('sub.csv', 'w')
     f.write('id,label\r\n')
-for img_id, (_id, img) in enumerate(test_dataloader):
+for img_id, (img, _id) in enumerate(test_dataloader):
     if img_id == nimgs: break
 
     print(f'Working on {img_id}...')

@@ -21,7 +21,7 @@ class ClAtNet(nn.Module):
         self.nfeatures = nfeatures
 
         # self.init_(self.conv)
-        # self.init_(self.attn)
+        self.init_(self.attn)
         # self.init_(self.cls)
 
     def init_(self, module):

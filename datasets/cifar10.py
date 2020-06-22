@@ -38,7 +38,7 @@ class CIFAR10Dataset(data.Dataset):
             lbl = torch.Tensor([self.lbls[i]]).long().squeeze()
             return img, lbl
         else:
-            return self.ids[i], img
+            return img, self.ids[i]
 
     def __len__(self):
         return len(self.ids)
